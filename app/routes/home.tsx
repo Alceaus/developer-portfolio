@@ -123,7 +123,7 @@ export default function Home() {
               <h2 className="text-xl font-bold mb-4">About</h2>
               <div className="space-y-4 text-neutral-800 dark:text-neutral-200 leading-relaxed">
                 <p>
-                  I'm a software engineer who specializes in developing solutions using Python, Javascript, and other technologies. I work on projects like building modern web applications, mobile apps, and optimizing processes.
+                  I'm a software engineer who specializes in developing solutions using Python, Javascript, and other technologies. I work on projects like building modern web applications, desktop applications, and optimizing processes.
                 </p>
                 <p>
                   Currently, I'm delving deeper into full-stack development, concentrating on producing high-quality, performant, and scalable applications. My current responsibilities include developing AI-powered solutions, creating intelligent applications, and leveraging generative AI to optimize development workflows.
