@@ -31,8 +31,8 @@ export default function Home() {
   const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
-    // Check initial preference from localStorage or system preference
-    if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    // Check initial preference from localStorage ONLY, Default to light mode
+    if (localStorage.theme === 'dark') {
       setIsDark(true);
       document.documentElement.classList.add('dark');
     } else {
