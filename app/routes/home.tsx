@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router";
+import { PROJECTS } from "../data";
 import type { Route } from "./+types/home";
 import {
   MapPin,
@@ -182,50 +183,44 @@ export default function Home() {
             <section className={cardClasses}>
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-xl font-bold">Recent Projects</h2>
-                <a href="#" className="hidden text-sm text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors">
-                  View All &rarr;
-                </a>
+                <Link to="/projects" className="flex items-center gap-1 text-xs font-medium text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors">
+                  View All <ChevronRight className="w-3 h-3" />
+                </Link>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                {/* Project 1 */}
-                <div className="p-3 rounded-xl border border-neutral-100 dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-600 transition-colors flex flex-col justify-between group">
-                  <div>
-                    <h3 className="font-semibold text-base leading-tight">
-                      LW Web-based AI
-                    </h3>
-                    <p className="text-neutral-600 dark:text-neutral-400 text-xs mt-1 mb-3 leading-snug">A Multi-tenant AI SaaS Platform</p>
-                  </div>
-                  <div className="inline-flex items-center gap-1.5 px-2 py-1 bg-neutral-100 dark:bg-neutral-800 text-[10px] rounded font-mono text-neutral-700 dark:text-neutral-300 w-fit">
-                    <Code2 className="w-3 h-3 shrink-0" /> <span className="truncate">N/A</span>
-                  </div>
-                </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {PROJECTS.slice(0, 4).map((project, idx) => {
+                  const Icon = project.icon;
+                  const CardContent = (
+                    <>
+                      <div>
+                        <h3 className="font-semibold text-base leading-tight group-hover:underline decoration-neutral-300 dark:decoration-neutral-600 underline-offset-4">
+                          {project.title}
+                        </h3>
+                        <p className="text-neutral-600 dark:text-neutral-400 text-xs mt-1 mb-3 leading-snug">{project.description}</p>
+                      </div>
+                      <div className="inline-flex items-center gap-1.5 px-2 py-1 bg-neutral-100 dark:bg-neutral-800 text-[10px] rounded font-mono text-neutral-700 dark:text-neutral-300 w-fit">
+                        <Icon className="w-3 h-3 shrink-0" /> <span className="truncate">{project.technologies}</span>
+                      </div>
+                    </>
+                  );
 
-                {/* Project 2 */}
-                <div className="p-3 rounded-xl border border-neutral-100 dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-600 transition-colors flex flex-col justify-between group">
-                  <div>
-                    <h3 className="font-semibold text-base leading-tight">
-                      FINSI Tracker
-                    </h3>
-                    <p className="text-neutral-600 dark:text-neutral-400 text-xs mt-1 mb-3 leading-snug">A workforce management system</p>
-                  </div>
-                  <div className="inline-flex items-center gap-1.5 px-2 py-1 bg-neutral-100 dark:bg-neutral-800 text-[10px] rounded font-mono text-neutral-700 dark:text-neutral-300 w-fit">
-                    <AppWindow className="w-3 h-3 shrink-0" /> <span className="truncate">N/A</span>
-                  </div>
-                </div>
+                  const cardClass = "p-3 rounded-xl border border-neutral-100 dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-600 transition-colors flex flex-col justify-between group h-full";
 
-                {/* Project 3 */}
-                <div className="p-3 rounded-xl border border-neutral-100 dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-600 transition-colors flex flex-col justify-between group">
-                  <div>
-                    <h3 className="font-semibold text-base leading-tight">
-                      ArcherEats
-                    </h3>
-                    <p className="text-neutral-600 dark:text-neutral-400 text-xs mt-1 mb-3 leading-snug">A local restaurant finder web app for DLSU Manila</p>
-                  </div>
-                  <div className="inline-flex items-center gap-1.5 px-2 py-1 bg-neutral-100 dark:bg-neutral-800 text-[10px] rounded font-mono text-neutral-700 dark:text-neutral-300 w-fit">
-                    <Code2 className="w-3 h-3 shrink-0" /> <span className="truncate">N/A</span>
-                  </div>
-                </div>
+                  if (project.link) {
+                    return (
+                      <a key={idx} href={project.link} target="_blank" rel="noopener noreferrer" className={cardClass}>
+                        {CardContent}
+                      </a>
+                    );
+                  }
+
+                  return (
+                    <div key={idx} className={cardClass}>
+                      {CardContent}
+                    </div>
+                  );
+                })}
               </div>
             </section>
           </div>
