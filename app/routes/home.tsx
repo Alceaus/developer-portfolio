@@ -126,7 +126,7 @@ export default function Home() {
                   I'm a software engineer who specializes in developing solutions using Python, Javascript, and other technologies. I work on projects like building modern web applications, desktop applications, and optimizing processes.
                 </p>
                 <p>
-                  Currently, I'm delving deeper into full-stack development, concentrating on producing high-quality, performant, and scalable applications. My current responsibilities include developing AI-powered solutions, creating intelligent applications, and leveraging generative AI to optimize development workflows.
+                  Currently, I'm delving deeper into full-stack development, concentrating on producing high-quality, performant, and scalable applications. I develop AI-powered solutions, create intelligent applications, and leverage generative AI to optimize development workflows.
                 </p>
               </div>
             </section>
