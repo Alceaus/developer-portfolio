@@ -2,11 +2,10 @@ import {
   isRouteErrorResponse,
   Links,
   Meta,
-  Outlet,
   Scripts,
   ScrollRestoration,
   useLocation,
-  useOutlet
+  useOutlet,
 } from "react-router";
 import { AnimatePresence, motion } from "framer-motion";
 

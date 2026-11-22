@@ -8,6 +8,9 @@
     
   --color-neutral-250: #dedede;
   --color-neutral-750: #333333;
+  --color-accent: #00cc66;
+  --color-accent-hover: #00b35a;
+  --color-accent-light: #00cc6620;
 }
 
 html,

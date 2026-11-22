@@ -6,15 +6,15 @@ import {
   MapPin,
   Download,
   Mail,
-  Terminal,
-  ExternalLink,
   Code2,
   Moon,
   Sun,
   AppWindow,
   ChevronRight,
+  ChevronLeft,
   Github,
-  Linkedin
+  Linkedin,
+  X
 } from "lucide-react";
 
 export function meta({ }: Route.MetaArgs) {
@@ -30,6 +30,7 @@ const cardClasses = "bg-white dark:bg-neutral-900 rounded-2xl border border-neut
 export default function Home() {
   // Theme state logic
   const [isDark, setIsDark] = useState(false);
+  const [selectedProject, setSelectedProject] = useState<number | null>(null);
 
   useEffect(() => {
     // Check initial preference from localStorage ONLY, Default to light mode
@@ -41,6 +42,16 @@ export default function Home() {
       document.documentElement.classList.remove('dark');
     }
   }, []);
+
+  // Lock body scroll when popup is open
+  useEffect(() => {
+    if (selectedProject !== null) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => { document.body.style.overflow = ''; };
+  }, [selectedProject]);
 
   const toggleTheme = () => {
     if (isDark) {
@@ -54,8 +65,10 @@ export default function Home() {
     }
   };
 
+  const displayedProjects = PROJECTS.slice(0, 4);
+
   return (
-    <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 font-sans selection:bg-blue-500/30 transition-colors duration-300">
+    <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 font-sans selection:bg-accent/30 transition-colors duration-300">
 
       {/* Main Container */}
       <main className="max-w-5xl mx-auto px-4 py-8 md:py-16 space-y-8 relative">
@@ -101,7 +114,7 @@ export default function Home() {
 
           {/* Action Buttons */}
           <div className="flex flex-wrap gap-2 justify-center sm:justify-start w-auto">
-            <a href="/resume.pdf" download className="flex items-center gap-1.5 px-3 py-1.5 bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 rounded-full text-sm font-medium hover:scale-105 transition-transform">
+            <a href="/resume.pdf" download className="flex items-center gap-1.5 px-3 py-1.5 bg-accent text-white rounded-full text-sm font-medium hover:bg-accent-hover hover:scale-105 transition-all">
               <Download className="w-3.5 h-3.5" />
               Download Resume
             </a>
@@ -135,7 +148,7 @@ export default function Home() {
             <section className={cardClasses}>
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-xl font-bold">Tech Stack</h2>
-                <Link to="/tech-stack" className="flex items-center gap-1 text-xs font-medium text-neutral-500 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white transition-colors">
+                <Link to="/tech-stack" className="flex items-center gap-1 text-xs font-medium text-accent hover:text-accent-hover transition-colors">
                   View All <ChevronRight className="w-3 h-3" />
                 </Link>
               </div>
@@ -145,7 +158,7 @@ export default function Home() {
                 <div>
                   <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100 mb-2">Frontend</h3>
                   <div className="flex flex-wrap gap-2">
-                    {["JavaScript", "TypeScript", "React", "Next.js", "HTML", "CSS", "Tailwind CSS"].map(tech => (
+                    {["React", "TypeScript", "Next.js", "JavaScript", "Tailwind CSS", "HTML", "CSS"].map(tech => (
                       <span key={tech} className="px-2.5 py-1 bg-neutral-100 dark:bg-neutral-800 text-xs rounded-md font-medium text-neutral-700 dark:text-neutral-300">
                         {tech}
                       </span>
@@ -157,7 +170,7 @@ export default function Home() {
                 <div>
                   <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100 mb-2">Backend</h3>
                   <div className="flex flex-wrap gap-2">
-                    {["Python", "C", "C++", "Kotlin", "Java", "Node.js", "MySQL", "PostgreSQL", "MongoDB"].map(tech => (
+                    {["Python", "Node.js", "PostgreSQL", "MongoDB", "Java", "Kotlin", "MySQL", "C", "C++"].map(tech => (
                       <span key={tech} className="px-2.5 py-1 bg-neutral-100 dark:bg-neutral-800 text-xs rounded-md font-medium text-neutral-700 dark:text-neutral-300">
                         {tech}
                       </span>
@@ -169,7 +182,7 @@ export default function Home() {
                 <div>
                   <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100 mb-2">AI & Prompt Engineering</h3>
                   <div className="flex flex-wrap gap-2">
-                    {["TensorFlow", "Hugging Face", "OpenAI", "Gemini", "Claude"].map(tech => (
+                    {["Claude", "Gemini", "OpenAI", "Hugging Face", "TensorFlow"].map(tech => (
                       <span key={tech} className="px-2.5 py-1 bg-neutral-100 dark:bg-neutral-800 text-xs rounded-md font-medium text-neutral-700 dark:text-neutral-300">
                         {tech}
                       </span>
@@ -183,18 +196,20 @@ export default function Home() {
             <section className={cardClasses}>
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-xl font-bold">Recent Projects</h2>
-                <Link to="/projects" className="flex items-center gap-1 text-xs font-medium text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors">
-                  View All <ChevronRight className="w-3 h-3" />
-                </Link>
+                {PROJECTS.length > 4 && (
+                  <Link to="/projects" className="flex items-center gap-1 text-xs font-medium text-accent hover:text-accent-hover transition-colors">
+                    View All <ChevronRight className="w-3 h-3" />
+                  </Link>
+                )}
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {PROJECTS.slice(0, 4).map((project, idx) => {
+                {displayedProjects.map((project, idx) => {
                   const Icon = project.icon;
                   const CardContent = (
                     <>
                       <div>
-                        <h3 className="font-semibold text-base leading-tight group-hover:underline decoration-neutral-300 dark:decoration-neutral-600 underline-offset-4">
+                        <h3 className="font-semibold text-base leading-tight group-hover:underline decoration-accent/40 underline-offset-4">
                           {project.title}
                         </h3>
                         <p className="text-neutral-600 dark:text-neutral-400 text-xs mt-1 mb-3 leading-snug">{project.description}</p>
@@ -205,20 +220,16 @@ export default function Home() {
                     </>
                   );
 
-                  const cardClass = "p-3 rounded-xl border border-neutral-100 dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-600 transition-colors flex flex-col justify-between group h-full";
-
-                  if (project.link) {
-                    return (
-                      <a key={idx} href={project.link} target="_blank" rel="noopener noreferrer" className={cardClass}>
-                        {CardContent}
-                      </a>
-                    );
-                  }
+                  const cardClass = "p-3 rounded-xl border border-neutral-100 dark:border-neutral-800 hover:border-accent/40 dark:hover:border-accent/40 transition-colors flex flex-col justify-between group h-full cursor-pointer";
 
                   return (
-                    <div key={idx} className={cardClass}>
+                    <button
+                      key={idx}
+                      onClick={() => setSelectedProject(idx)}
+                      className={cardClass + " text-left"}
+                    >
                       {CardContent}
-                    </div>
+                    </button>
                   );
                 })}
               </div>
@@ -254,7 +265,7 @@ export default function Home() {
 
                 {/* Job 1 */}
                 <div className="relative pl-6 group">
-                  <div className="absolute -left-1.5 top-1.5 w-3 h-3 bg-neutral-900 group-hover/timeline:bg-neutral-300 dark:bg-neutral-100 dark:group-hover/timeline:bg-neutral-700 group-hover:!bg-neutral-900 dark:group-hover:!bg-neutral-100 rounded-sm outline outline-4 outline-white dark:outline-neutral-900 transition-colors"></div>
+                  <div className="absolute -left-1.5 top-1.5 w-3 h-3 bg-accent group-hover/timeline:bg-neutral-300 dark:group-hover/timeline:bg-neutral-700 group-hover:!bg-accent rounded-sm outline outline-4 outline-white dark:outline-neutral-900 transition-colors"></div>
                   <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-1 gap-2">
                     <h3 className="font-bold">Software Engineer Intern</h3>
                     <span className="text-xs font-mono text-neutral-600 dark:text-neutral-300 bg-neutral-100 dark:bg-neutral-800 px-2 py-0.5 rounded">2026</span>
@@ -264,7 +275,7 @@ export default function Home() {
 
                 {/* Job 2 */}
                 <div className="relative pl-6 group">
-                  <div className="absolute -left-1.5 top-1.5 w-3 h-3 bg-neutral-300 group-hover/timeline:bg-neutral-300 dark:bg-neutral-700 dark:group-hover/timeline:bg-neutral-700 group-hover:!bg-neutral-900 dark:group-hover:!bg-neutral-100 rounded-sm outline outline-4 outline-white dark:outline-neutral-900 transition-colors"></div>
+                  <div className="absolute -left-1.5 top-1.5 w-3 h-3 bg-neutral-300 group-hover/timeline:bg-neutral-300 dark:bg-neutral-700 dark:group-hover/timeline:bg-neutral-700 group-hover:!bg-accent rounded-sm outline outline-4 outline-white dark:outline-neutral-900 transition-colors"></div>
                   <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-1 gap-2">
                     <h3 className="font-bold">BS Computer Science Major in Software Engineering</h3>
                     <span className="text-xs font-mono text-neutral-600 dark:text-neutral-300 bg-neutral-100 dark:bg-neutral-800 px-2 py-0.5 rounded">2026</span>
@@ -314,6 +325,68 @@ export default function Home() {
           <p>© 2026 Marc Daniel Marasigan. All rights reserved.</p>
         </footer>
       </main>
+
+      {/* Project Detail Popup / Modal */}
+      {selectedProject !== null && (
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
+          onClick={() => setSelectedProject(null)}
+        >
+          <div
+            className="bg-white dark:bg-neutral-900 rounded-2xl border border-neutral-200 dark:border-neutral-800 shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Popup Header */}
+            <div className="sticky top-0 z-10 bg-white dark:bg-neutral-900 border-b border-neutral-200 dark:border-neutral-800 px-6 py-4 flex items-center justify-between rounded-t-2xl">
+              <h2 className="text-xl font-bold">{PROJECTS[selectedProject].title}</h2>
+              <button
+                onClick={() => setSelectedProject(null)}
+                className="p-1.5 rounded-lg bg-accent/10 text-accent hover:bg-accent hover:text-white transition-colors"
+                aria-label="Close"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Popup Content */}
+            <div className="p-6 space-y-6">
+              {/* Project Images */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {PROJECTS[selectedProject].images.map((img, i) => (
+                  <div key={i} className="rounded-xl overflow-hidden border border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-800">
+                    <img
+                      src={img.src}
+                      alt={img.alt}
+                      className="w-full h-auto object-cover"
+                      loading="lazy"
+                    />
+                  </div>
+                ))}
+              </div>
+
+              {/* Project Description */}
+              <div className="space-y-3 pt-2">
+                <h3 className="text-lg font-semibold">About This Project</h3>
+                <p className="text-xs font-medium text-accent mb-2">Role: {PROJECTS[selectedProject].role}</p>
+                <p className="text-neutral-700 dark:text-neutral-300 leading-relaxed text-sm">
+                  {PROJECTS[selectedProject].fullDescription}
+                </p>
+              </div>
+
+              {/* Close / Back Button */}
+              <div className="flex gap-3 pt-2">
+                <button
+                  onClick={() => setSelectedProject(null)}
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-accent text-white rounded-lg text-sm font-medium hover:bg-accent-hover transition-colors"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                  Back to Home
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

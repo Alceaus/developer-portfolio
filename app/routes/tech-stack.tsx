@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, X } from "lucide-react";
 import type { Route } from "./+types/tech-stack";
 
 export function meta({ }: Route.MetaArgs) {
@@ -12,15 +12,15 @@ export function meta({ }: Route.MetaArgs) {
 const SKILL_CATEGORIES = [
   {
     title: "Frontend",
-    skills: ["JavaScript", "TypeScript", "React", "Next.js", "HTML", "CSS", "Tailwind CSS", "JQuery"],
+    skills: ["React", "TypeScript", "Next.js", "JavaScript", "Tailwind CSS", "HTML", "CSS", "JQuery"],
   },
   {
     title: "Backend",
-    skills: ["Python", "C", "C++", "Kotlin", "Java", "Node.js", "Ruby", "Go", "R", "MySQL", "PostgreSQL", "MongoDB"],
+    skills: ["Python", "Node.js", "PostgreSQL", "MongoDB", "Java", "Kotlin", "MySQL", "Go", "C", "C++", "Ruby", "R"],
   },
   {
     title: "AI & Prompt Engineering",
-    skills: ["TensorFlow", "Hugging Face", "OpenAI", "Gemini", "Claude", "Blackbox", "Jupyter Notebook", "DeepSeek"],
+    skills: ["Claude", "Gemini", "OpenAI", "DeepSeek", "Hugging Face", "TensorFlow", "Blackbox", "Jupyter Notebook"],
   },
   {
     title: "Developer Tools",
@@ -30,19 +30,28 @@ const SKILL_CATEGORIES = [
 
 export default function TechStack() {
   return (
-    <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 font-sans selection:bg-neutral-200 dark:selection:bg-neutral-800 transition-colors duration-300">
+    <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 font-sans selection:bg-accent/20 transition-colors duration-300">
       <main className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20">
 
         {/* Header Section */}
-        <div className="mb-12">
+        <div className="mb-12 flex items-start justify-between">
+          <div>
+            <Link
+              to="/"
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-accent hover:text-accent-hover transition-colors mb-6 group"
+            >
+              <ChevronLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
+              Back to Home
+            </Link>
+            <h1 className="text-4xl sm:text-5xl font-black tracking-tight">Tech Stack</h1>
+          </div>
           <Link
             to="/"
-            className="inline-flex items-center gap-1.5 text-sm font-medium text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors mb-6 group"
+            className="mt-1 p-1.5 rounded-lg bg-accent/10 text-accent hover:bg-accent hover:text-white transition-colors"
+            aria-label="Close"
           >
-            <ChevronLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
-            Back to Home
+            <X className="w-5 h-5" />
           </Link>
-          <h1 className="text-4xl sm:text-5xl font-black tracking-tight">Tech Stack</h1>
         </div>
 
         {/* Categories Layout */}
@@ -58,7 +67,7 @@ export default function TechStack() {
                     key={skill}
                     className="px-3 py-1.5 rounded-lg border border-neutral-200 dark:border-neutral-800 
                                bg-white dark:bg-neutral-900 text-sm font-medium text-neutral-700 dark:text-neutral-300
-                               hover:border-neutral-300 dark:hover:border-neutral-700 hover:bg-neutral-50 dark:hover:bg-neutral-800 transition-colors flexitems-center"
+                               hover:border-accent/40 dark:hover:border-accent/40 hover:bg-neutral-50 dark:hover:bg-neutral-800 transition-colors flex items-center"
                   >
                     {skill}
                   </div>
