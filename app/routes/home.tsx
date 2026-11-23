@@ -123,10 +123,10 @@ export default function Home() {
               </h1>
               <p className="text-neutral-500 dark:text-neutral-400 flex items-center justify-center sm:justify-start gap-1">
                 <MapPin className="w-4 h-4" />
-                Marikina, Philippines
+                Metro Manila, Philippines
               </p>
               <p className="text-lg font-medium tracking-tight pt-1">
-                Software Engineer \ Web Developer
+                Software Engineer & Web Developer
               </p>
             </div>
           </div>
@@ -271,9 +271,9 @@ export default function Home() {
               />
 
               {/* Small caption overlay at the bottom to maintain the Bento Grid aesthetic */}
-              <div className="absolute bottom-4 right-6 z-20 opacity-30 group-hover:opacity-100 transition-opacity">
+              {/* <div className="absolute bottom-4 right-6 z-20 opacity-30 group-hover:opacity-100 transition-opacity">
                 <p className="text-[10px] uppercase tracking-widest font-mono">Sburb System</p>
-              </div>
+              </div> */}
             </div>
 
             {/* Experience Timeline Card */}
@@ -360,7 +360,7 @@ export default function Home() {
             >
               {/* Popup Header */}
               <div className="sticky top-0 z-10 bg-white/95 dark:bg-neutral-900/95 backdrop-blur-md border-b border-neutral-200 dark:border-neutral-800 px-6 py-4 flex items-center justify-between">
-                <h2 className="text-xl font-bold">{PROJECTS[selectedProject].title}</h2>
+                <h2 className="text-xl font-bold text-neutral-900 dark:text-neutral-100">{PROJECTS[selectedProject].title}</h2>
                 <button
                   onClick={() => setSelectedProject(null)}
                   className="p-1.5 rounded-lg bg-accent/15 text-emerald-700 dark:text-accent hover:bg-accent hover:text-neutral-950 transition-colors"
@@ -372,48 +372,41 @@ export default function Home() {
 
               {/* Popup Content */}
               <div className="p-6 space-y-6">
-                {/* Project Images */}
+                {/* Project Images or NDA Notice */}
+                {PROJECTS[selectedProject].images.length === 0 ? (
+                  <div className="rounded-xl border border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-800/60 px-6 py-10 text-center">
+                    <h3 className="text-base font-semibold text-neutral-500 dark:text-neutral-400">
+                      Certain contents of this project are not allowed to be shared
+                    </h3>
+                  </div>
+                ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {PROJECTS[selectedProject].images.map((img, i) => {
-                    const isRedacted = img.src.includes("REDACTED");
-                    return (
+                  {PROJECTS[selectedProject].images.map((img, i) => (
                       <div
                         key={i}
-                        onClick={() => {
-                          if (!isRedacted) {
-                            setActiveImage(img);
-                          }
-                        }}
-                        className={`group/img rounded-xl overflow-hidden border border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center relative transition-all ${
-                          isRedacted
-                            ? "cursor-default"
-                            : "cursor-zoom-in hover:border-accent/60 shadow-xs hover:shadow-md"
-                        }`}
-                        title={isRedacted ? undefined : "Click to view full image"}
+                        onClick={() => setActiveImage(img)}
+                        className="group/img rounded-xl overflow-hidden border border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center relative transition-all cursor-zoom-in hover:border-accent/60 shadow-xs hover:shadow-md"
+                        title="Click to view full image"
                       >
                         <img
                           src={img.src}
                           alt={img.alt}
-                          className={`w-full h-auto max-h-[350px] object-contain sm:object-cover transition-transform duration-300 ${
-                            isRedacted ? "" : "group-hover/img:scale-105"
-                          }`}
+                          className="w-full h-auto max-h-[350px] object-contain sm:object-cover transition-transform duration-300 group-hover/img:scale-105"
                           loading="lazy"
                         />
-                        {!isRedacted && (
-                          <div className="absolute inset-0 bg-black/0 group-hover/img:bg-black/20 transition-colors flex items-center justify-center pointer-events-none">
-                            <div className="opacity-0 group-hover/img:opacity-100 transition-all duration-200 transform scale-90 group-hover/img:scale-100 bg-neutral-900/80 backdrop-blur-xs text-white p-2.5 rounded-full shadow-lg border border-white/20">
-                              <ZoomIn className="w-5 h-5 text-accent" />
-                            </div>
+                        <div className="absolute inset-0 bg-black/0 group-hover/img:bg-black/20 transition-colors flex items-center justify-center pointer-events-none">
+                          <div className="opacity-0 group-hover/img:opacity-100 transition-all duration-200 transform scale-90 group-hover/img:scale-100 bg-neutral-900/80 backdrop-blur-xs text-white p-2.5 rounded-full shadow-lg border border-white/20">
+                            <ZoomIn className="w-5 h-5 text-accent" />
                           </div>
-                        )}
+                        </div>
                       </div>
-                    );
-                  })}
+                    ))}
                 </div>
+                )}
 
                 {/* Project Description */}
                 <div className="space-y-3 pt-2">
-                  <h3 className="text-lg font-semibold">About This Project</h3>
+                  <h3 className="text-lg font-semibold text-neutral-900 dark:text-neutral-100">About This Project</h3>
                   <p className="text-xs font-semibold text-emerald-600 dark:text-accent mb-2">Role: {PROJECTS[selectedProject].role}</p>
                   <p className="text-neutral-700 dark:text-neutral-300 leading-relaxed text-sm">
                     {PROJECTS[selectedProject].fullDescription}
